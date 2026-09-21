@@ -3,85 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Western Province Hidden Tourism Assets</title>
+    <title>Western Province Hidden Gems</title>
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome for Icons -->
+    <!-- Font Awesome for sleek icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Modern CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <header>
-                <h2><i class="fa-solid fa-map-location-dot"></i> Hidden Gems Explorer</h2>
-                <p>Discover & Map Hidden Tourism Assets in the Western Province.</p>
-            </header>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="logo-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <h1>Sri Lanka Hidden Gems <span>Western Province</span></h1>
+        </div>
+        <div class="nav-actions">
+            <button id="nav-add-btn" class="btn-primary">
+                <i class="fa-solid fa-location-crosshairs"></i> Map a Destination
+            </button>
+        </div>
+    </nav>
 
-            <div class="filter-section">
-                <h3>Filter by Category</h3>
-                <select id="category-filter">
-                    <option value="all">All Categories</option>
-                    <option value="nature">Nature & Outdoors</option>
-                    <option value="culture">Culture & Heritage</option>
-                    <option value="adventure">Adventure</option>
-                    <option value="food">Local Culinary</option>
-                </select>
+    <div class="main-content">
+        <!-- Floating Glassmorphism Control Panel -->
+        <div class="floating-panel">
+            <div class="panel-section">
+                <h3><i class="fa-solid fa-layer-group"></i> Explore Categories</h3>
+                <div class="custom-select-wrapper">
+                    <select id="category-filter" class="custom-select">
+                        <option value="all">🌍 All Destinations</option>
+                        <option value="nature">🍃 Nature & Outdoors</option>
+                        <option value="culture">🏛️ Culture & Heritage</option>
+                        <option value="adventure">🧗 Adventure Trails</option>
+                        <option value="food">🍛 Local Culinary Spots</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="instructions">
-                <h3><i class="fa-solid fa-circle-info"></i> How to Contribute</h3>
-                <p>Click anywhere on the map to add a newly discovered hidden gem. Fill in the details to share it with the community anonymously!</p>
+            <div class="panel-section stats-box">
+                <div class="stat-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+                <div class="stat-text">
+                    <span class="stat-title">Community Discovered</span>
+                    <span class="stat-value" id="total-count">0</span>
+                </div>
             </div>
 
-            <div class="stats-section">
-                <h3>Community Stats</h3>
-                <p>Total Assets Mapped: <span id="total-count">0</span></p>
+            <div class="panel-section help-text">
+                <p><strong><i class="fa-solid fa-lightbulb"></i> How to map:</strong> Click anywhere on the map or use the top button to anonymously share a hidden spot with the community.</p>
             </div>
-            
-            <footer>
-                <p>Developed for PL 3508: Advance GIS and Remote Sensing for Planning</p>
-            </footer>
-        </aside>
+        </div>
 
-        <!-- Map Container -->
-        <main id="map"></main>
+        <!-- Fullscreen Map Container -->
+        <div id="map"></div>
+    </div>
 
-        <!-- Add Asset Modal (Hidden by default) -->
-        <div id="add-modal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h2>Add a Hidden Gem</h2>
+    <!-- Redesigned Modern Modal -->
+    <div id="add-modal" class="modal hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Add a New Discovery</h2>
+                <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-subtitle">Help tourists explore the unexplored. Your submission will be shared anonymously.</p>
                 <form id="add-asset-form">
                     <input type="hidden" id="lat" name="lat">
                     <input type="hidden" id="lng" name="lng">
                     
-                    <div class="form-group">
-                        <label for="asset-name">Location Name *</label>
-                        <input type="text" id="asset-name" required placeholder="e.g., Secret Waterfall">
+                    <div class="input-group">
+                        <label for="asset-name">Location Name</label>
+                        <input type="text" id="asset-name" required placeholder="e.g., Secret Kalutara Waterfall">
                     </div>
 
-                    <div class="form-group">
-                        <label for="asset-category">Category *</label>
+                    <div class="input-group">
+                        <label for="asset-category">Category</label>
                         <select id="asset-category" required>
-                            <option value="nature">Nature & Outdoors</option>
-                            <option value="culture">Culture & Heritage</option>
-                            <option value="adventure">Adventure</option>
-                            <option value="food">Local Culinary</option>
+                            <option value="nature" selected>🍃 Nature & Outdoors</option>
+                            <option value="culture">🏛️ Culture & Heritage</option>
+                            <option value="adventure">🧗 Adventure Trails</option>
+                            <option value="food">🍛 Local Culinary Spots</option>
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="asset-desc">Description (Why is it special?) *</label>
-                        <textarea id="asset-desc" rows="3" required placeholder="Describe what makes this place unique..."></textarea>
+                    <div class="input-group">
+                        <label for="asset-desc">Description</label>
+                        <textarea id="asset-desc" rows="3" required placeholder="What makes this place special? How can others find it?"></textarea>
                     </div>
 
-                    <button type="submit" class="submit-btn">Share Asset Anonymously</button>
+                    <button type="submit" class="btn-primary full-width">
+                        <i class="fa-solid fa-paper-plane"></i> Publish to Map
+                    </button>
                 </form>
             </div>
         </div>
