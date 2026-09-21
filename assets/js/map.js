@@ -4,10 +4,10 @@ const map = L.map('map', { zoomControl: false }).setView([6.85, 80.05], 11);
 // Move zoom control to bottom right so it doesn't clash with floating panel
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-// Add modern Mapbox-like OpenStreetMap base layer (using CartoDB Voyager for a cleaner look)
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+// Add vibrant Esri World Street Map base layer for maximum color
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors &copy; CARTO | Western Province Hidden Gems'
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 }).addTo(map);
 
 // DOM Elements
