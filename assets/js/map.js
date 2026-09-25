@@ -86,6 +86,7 @@ form.addEventListener('submit', function(e) {
         name: document.getElementById('asset-name').value,
         category: document.getElementById('asset-category').value,
         description: document.getElementById('asset-desc').value,
+        photo: document.getElementById('asset-photo').value,
         lat: parseFloat(latInput.value),
         lng: parseFloat(lngInput.value),
         dateAdded: new Date().toISOString()
@@ -129,9 +130,11 @@ function renderMarkers(filter = 'all') {
               shadowSize: [41, 41]
             });
 
-            // Clean, modern popup content
+            // Clean, modern popup content with optional photo
+            const photoHTML = asset.photo ? `<img src="${asset.photo}" alt="${escapeHTML(asset.name)}" class="popup-photo">` : '';
             const popupContent = `
                 <div class="custom-popup">
+                    ${photoHTML}
                     <h3>${escapeHTML(asset.name)}</h3>
                     <p>${escapeHTML(asset.description)}</p>
                     <span class="tag ${asset.category}">${categoryEmojis[asset.category]} ${asset.category}</span>
@@ -158,12 +161,14 @@ function escapeHTML(str) {
     return div.innerHTML;
 }
 
-// Add beautiful mock data if empty
+// Add beautiful mock data with popular Western Province destinations if empty
 if (tourismAssets.length === 0) {
     tourismAssets = [
-        { id: 1, name: "Secret Kalutara Waterfall", category: "nature", description: "A beautiful cascading waterfall nestled deep within the rubber estates. Perfect for a morning hike and natural pool dip.", lat: 6.685, lng: 80.125, dateAdded: new Date().toISOString() },
-        { id: 2, name: "Dutch Fort Ruins", category: "culture", description: "Lesser-known 17th-century colonial ruins covered in jungle overgrowth. Amazing photography spot.", lat: 6.832, lng: 79.995, dateAdded: new Date().toISOString() },
-        { id: 3, name: "Midnight Kottu Spot", category: "food", description: "The most authentic street kottu in the province. No signboard, just follow the sound of the chopping blades after 10 PM.", lat: 6.901, lng: 79.882, dateAdded: new Date().toISOString() }
+        { id: 1, name: "Colombo National Museum", category: "culture", description: "The largest museum in Sri Lanka, housing royal regalia and ancient artifacts from the Kandyan kingdom.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/National_Museum_of_Colombo_01.jpg/800px-National_Museum_of_Colombo_01.jpg", lat: 6.9105, lng: 79.8604, dateAdded: new Date().toISOString() },
+        { id: 2, name: "Gangaramaya Temple", category: "culture", description: "A highly revered temple mixing modern architecture and cultural essence, situated near Beira Lake.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Gangaramaya_Temple_Colombo.jpg/800px-Gangaramaya_Temple_Colombo.jpg", lat: 6.9157, lng: 79.8573, dateAdded: new Date().toISOString() },
+        { id: 3, name: "Galle Face Green", category: "nature", description: "A popular 5 hectare ocean-side urban park in the heart of Colombo. Great for sunset views and street food.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Galle_Face_Green.jpg/800px-Galle_Face_Green.jpg", lat: 6.9242, lng: 79.8447, dateAdded: new Date().toISOString() },
+        { id: 4, name: "Mount Lavinia Beach", category: "nature", description: "A famous beach just south of Colombo, known for its golden sand and vibrant sunset views.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Mount_Lavinia_Beach.jpg/800px-Mount_Lavinia_Beach.jpg", lat: 6.8347, lng: 79.8647, dateAdded: new Date().toISOString() },
+        { id: 5, name: "Secret Kalutara Waterfall", category: "nature", description: "A hidden cascading waterfall nestled deep within the rubber estates. Perfect for a morning hike and natural pool dip.", photo: "", lat: 6.685, lng: 80.125, dateAdded: new Date().toISOString() }
     ];
     localStorage.setItem('tourismAssets', JSON.stringify(tourismAssets));
     renderMarkers();
