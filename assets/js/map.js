@@ -81,9 +81,36 @@ function openModal(lat, lng) {
     modal.classList.remove('hidden');
 }
 
-// Map click event
-map.on('click', function(e) {
-    openModal(e.latlng.lat, e.latlng.lng);
+// Map click event (with Ocean & Country restriction)
+map.on('click', async function(e) {
+    const lat = e.latlng.lat;
+    const lng = e.latlng.lng;
+    
+    // Temporarily change cursor to show loading
+    document.getElementById('map').style.cursor = 'wait';
+    
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+        const data = await response.json();
+        
+        document.getElementById('map').style.cursor = '';
+        
+        if (data.error) {
+            alert("🌊 Oops! You clicked on the ocean. Please select a valid land location.");
+            return;
+        }
+        
+        if (data.address && data.address.country_code !== 'lk') {
+            alert("🗺️ Please select a location within Sri Lanka.");
+            return;
+        }
+        
+        openModal(lat, lng);
+    } catch (err) {
+        document.getElementById('map').style.cursor = '';
+        // Fallback if API fails
+        openModal(lat, lng);
+    }
 });
 
 // Navbar Add Button click event
@@ -204,7 +231,7 @@ function renderMarkers(filter = 'all') {
                         <p>${escapeHTML(asset.description)}</p>
                     </div>
                     
-                    <button class="btn-details-dropdown" onclick="window.toggleDetails(${asset.id})">
+                    <button class="btn-details-dropdown" onclick="window.toggleDetails(event, ${asset.id})">
                         <i class="fa-solid fa-chevron-down"></i> More Details
                     </button>
                 </div>
@@ -228,7 +255,8 @@ function renderMarkers(filter = 'all') {
 }
 
 // Global function to toggle dropdown details in popup
-window.toggleDetails = function(id) {
+window.toggleDetails = function(event, id) {
+    if (event) event.stopPropagation();
     const detailsDiv = document.getElementById(`details-${id}`);
     if (detailsDiv) {
         detailsDiv.classList.toggle('expanded');
