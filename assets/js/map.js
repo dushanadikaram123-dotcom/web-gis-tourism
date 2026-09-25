@@ -24,9 +24,16 @@ const lngInput = document.getElementById('lng');
 const categoryFilter = document.getElementById('category-filter');
 const totalCountEl = document.getElementById('total-count');
 const navAddBtn = document.getElementById('nav-add-btn');
+const togglePanelBtn = document.getElementById('toggle-panel-btn');
+const floatingPanel = document.getElementById('floating-panel');
 
 let tourismAssets = [];
 let markers = []; 
+
+// Panel Toggle Logic
+togglePanelBtn.addEventListener('click', () => {
+    floatingPanel.classList.toggle('minimized');
+});
 
 const categoryColors = {
     nature: 'green',
@@ -104,11 +111,33 @@ form.addEventListener('submit', async function(e) {
     submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving to Database...';
     submitBtn.disabled = true;
 
+    // Handle File Upload to Base64
+    const photoInput = document.getElementById('asset-photo');
+    let photoBase64 = "";
+    
+    if (photoInput.files && photoInput.files[0]) {
+        const file = photoInput.files[0];
+        try {
+            photoBase64 = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        } catch (err) {
+            console.error("Error reading file:", err);
+            alert("Error reading the image file.");
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            return;
+        }
+    }
+
     const newAsset = {
         name: document.getElementById('asset-name').value,
         category: document.getElementById('asset-category').value,
         description: document.getElementById('asset-desc').value,
-        photo: document.getElementById('asset-photo').value,
+        photo: photoBase64,
         lat: parseFloat(latInput.value),
         lng: parseFloat(lngInput.value)
     };
