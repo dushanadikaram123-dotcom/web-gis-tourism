@@ -1,3 +1,8 @@
+// Initialize Supabase Connection
+const SUPABASE_URL = 'https://qhlwqorsiaofkyvlpqdi.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_yfZqvkmeXnDlD42lBJStvQ_LCKw5rOn';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // Initialize map centered on the Western Province, Sri Lanka
 const map = L.map('map', { zoomControl: false }).setView([6.85, 80.05], 11);
 
@@ -20,11 +25,9 @@ const categoryFilter = document.getElementById('category-filter');
 const totalCountEl = document.getElementById('total-count');
 const navAddBtn = document.getElementById('nav-add-btn');
 
-// Store assets (using localStorage to simulate database for public interaction)
-let tourismAssets = JSON.parse(localStorage.getItem('tourismAssets')) || [];
+let tourismAssets = [];
 let markers = []; 
 
-// Category Icon configuration
 const categoryColors = {
     nature: 'green',
     culture: 'orange',
@@ -39,8 +42,49 @@ const categoryEmojis = {
     food: '🍛'
 };
 
-// Initial Render
-renderMarkers();
+// Fetch data from Supabase PostgreSQL Database
+async function loadDestinations() {
+    const { data, error } = await supabase
+        .from('destinations')
+        .select('*')
+        .order('created_at', { ascending: false });
+        
+    if (error) {
+        console.error('Error fetching data from Supabase:', error);
+        return;
+    }
+
+    tourismAssets = data;
+
+    // Auto-seed the database if it is completely empty
+    if (tourismAssets.length === 0) {
+        await seedInitialData();
+    } else {
+        renderMarkers();
+    }
+}
+
+// Function to automatically seed the popular destinations into Supabase the first time
+async function seedInitialData() {
+    const seedData = [
+        { name: "Colombo National Museum", category: "culture", description: "The largest museum in Sri Lanka, housing royal regalia and ancient artifacts from the Kandyan kingdom.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/National_Museum_of_Colombo_01.jpg/800px-National_Museum_of_Colombo_01.jpg", lat: 6.9105, lng: 79.8604 },
+        { name: "Gangaramaya Temple", category: "culture", description: "A highly revered temple mixing modern architecture and cultural essence, situated near Beira Lake.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Gangaramaya_Temple_Colombo.jpg/800px-Gangaramaya_Temple_Colombo.jpg", lat: 6.9157, lng: 79.8573 },
+        { name: "Galle Face Green", category: "nature", description: "A popular 5 hectare ocean-side urban park in the heart of Colombo. Great for sunset views and street food.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Galle_Face_Green.jpg/800px-Galle_Face_Green.jpg", lat: 6.9242, lng: 79.8447 },
+        { name: "Mount Lavinia Beach", category: "nature", description: "A famous beach just south of Colombo, known for its golden sand and vibrant sunset views.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Mount_Lavinia_Beach.jpg/800px-Mount_Lavinia_Beach.jpg", lat: 6.8347, lng: 79.8647 },
+        { name: "Secret Kalutara Waterfall", category: "nature", description: "A hidden cascading waterfall nestled deep within the rubber estates. Perfect for a morning hike and natural pool dip.", photo: "", lat: 6.685, lng: 80.125 }
+    ];
+    
+    const { error } = await supabase.from('destinations').insert(seedData);
+    if (!error) {
+        console.log("Seeded database with initial popular destinations.");
+        await loadDestinations(); // Reload after seeding
+    } else {
+        console.error("Failed to seed database:", error);
+    }
+}
+
+// Load data immediately on startup
+loadDestinations();
 
 // Function to handle opening the modal
 function openModal(lat, lng) {
@@ -48,7 +92,6 @@ function openModal(lat, lng) {
         latInput.value = lat;
         lngInput.value = lng;
     } else {
-        // If clicked from navbar button, default to map center
         const center = map.getCenter();
         latInput.value = center.lat;
         lngInput.value = center.lng;
@@ -77,27 +120,42 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Form Submission
-form.addEventListener('submit', function(e) {
+// Form Submission -> Send to Supabase Database
+form.addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving to Database...';
+    submitBtn.disabled = true;
+
     const newAsset = {
-        id: Date.now(),
         name: document.getElementById('asset-name').value,
         category: document.getElementById('asset-category').value,
         description: document.getElementById('asset-desc').value,
         photo: document.getElementById('asset-photo').value,
         lat: parseFloat(latInput.value),
-        lng: parseFloat(lngInput.value),
-        dateAdded: new Date().toISOString()
+        lng: parseFloat(lngInput.value)
     };
     
-    tourismAssets.push(newAsset);
-    localStorage.setItem('tourismAssets', JSON.stringify(tourismAssets));
+    // Insert into Supabase
+    const { error } = await supabase
+        .from('destinations')
+        .insert([newAsset]);
+        
+    submitBtn.innerHTML = originalText;
+    submitBtn.disabled = false;
+        
+    if (error) {
+        alert("Error saving to database: " + error.message);
+        return;
+    }
     
     modal.classList.add('hidden');
     form.reset();
-    renderMarkers();
+    
+    // Fetch latest data from database to update the map
+    await loadDestinations();
     
     // Smooth pan to new asset
     map.flyTo([newAsset.lat, newAsset.lng], 14, { duration: 1.5 });
@@ -150,26 +208,13 @@ function renderMarkers(filter = 'all') {
         }
     });
     
-    // Animate stat number update
     totalCountEl.textContent = count;
 }
 
 // Utility to escape HTML and prevent XSS
 function escapeHTML(str) {
+    if (!str) return '';
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
-}
-
-// Add beautiful mock data with popular Western Province destinations if empty
-if (tourismAssets.length === 0) {
-    tourismAssets = [
-        { id: 1, name: "Colombo National Museum", category: "culture", description: "The largest museum in Sri Lanka, housing royal regalia and ancient artifacts from the Kandyan kingdom.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/National_Museum_of_Colombo_01.jpg/800px-National_Museum_of_Colombo_01.jpg", lat: 6.9105, lng: 79.8604, dateAdded: new Date().toISOString() },
-        { id: 2, name: "Gangaramaya Temple", category: "culture", description: "A highly revered temple mixing modern architecture and cultural essence, situated near Beira Lake.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Gangaramaya_Temple_Colombo.jpg/800px-Gangaramaya_Temple_Colombo.jpg", lat: 6.9157, lng: 79.8573, dateAdded: new Date().toISOString() },
-        { id: 3, name: "Galle Face Green", category: "nature", description: "A popular 5 hectare ocean-side urban park in the heart of Colombo. Great for sunset views and street food.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Galle_Face_Green.jpg/800px-Galle_Face_Green.jpg", lat: 6.9242, lng: 79.8447, dateAdded: new Date().toISOString() },
-        { id: 4, name: "Mount Lavinia Beach", category: "nature", description: "A famous beach just south of Colombo, known for its golden sand and vibrant sunset views.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Mount_Lavinia_Beach.jpg/800px-Mount_Lavinia_Beach.jpg", lat: 6.8347, lng: 79.8647, dateAdded: new Date().toISOString() },
-        { id: 5, name: "Secret Kalutara Waterfall", category: "nature", description: "A hidden cascading waterfall nestled deep within the rubber estates. Perfect for a morning hike and natural pool dip.", photo: "", lat: 6.685, lng: 80.125, dateAdded: new Date().toISOString() }
-    ];
-    localStorage.setItem('tourismAssets', JSON.stringify(tourismAssets));
-    renderMarkers();
 }
