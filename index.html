@@ -33,30 +33,35 @@
 
     <div class="main-content">
         <!-- Floating Glassmorphism Control Panel -->
-        <div class="floating-panel">
-            <div class="panel-section">
-                <h3><i class="fa-solid fa-layer-group"></i> Explore Categories</h3>
-                <div class="custom-select-wrapper">
-                    <select id="category-filter" class="custom-select">
-                        <option value="all">🌍 All Destinations</option>
-                        <option value="nature">🍃 Nature & Outdoors</option>
-                        <option value="culture">🏛️ Culture & Heritage</option>
-                        <option value="adventure">🧗 Adventure Trails</option>
-                        <option value="food">🍛 Local Culinary Spots</option>
-                    </select>
+        <div class="floating-panel minimized" id="floating-panel">
+            <button id="toggle-panel-btn" class="panel-toggle">
+                <i class="fa-solid fa-filter"></i> <span>Explore Categories</span>
+            </button>
+            
+            <div class="panel-content">
+                <div class="panel-section">
+                    <div class="custom-select-wrapper">
+                        <select id="category-filter" class="custom-select">
+                            <option value="all">🌍 All Destinations</option>
+                            <option value="nature">🍃 Nature & Outdoors</option>
+                            <option value="culture">🏛️ Culture & Heritage</option>
+                            <option value="adventure">🧗 Adventure Trails</option>
+                            <option value="food">🍛 Local Culinary Spots</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
 
-            <div class="panel-section stats-box">
-                <div class="stat-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
-                <div class="stat-text">
-                    <span class="stat-title">Community Discovered</span>
-                    <span class="stat-value" id="total-count">0</span>
+                <div class="panel-section stats-box">
+                    <div class="stat-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+                    <div class="stat-text">
+                        <span class="stat-title">Community Discovered</span>
+                        <span class="stat-value" id="total-count">0</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="panel-section help-text">
-                <p><strong><i class="fa-solid fa-lightbulb"></i> How to map:</strong> Click anywhere on the map or use the top button to anonymously share a hidden spot with the community.</p>
+                <div class="panel-section help-text">
+                    <p><strong><i class="fa-solid fa-lightbulb"></i> How to map:</strong> Click anywhere on the map or use the top button to anonymously share a hidden spot with the community.</p>
+                </div>
             </div>
         </div>
 
@@ -98,8 +103,8 @@
                     </div>
 
                     <div class="input-group">
-                        <label for="asset-photo">Photo URL (Optional)</label>
-                        <input type="url" id="asset-photo" placeholder="https://example.com/photo.jpg">
+                        <label for="asset-photo">Upload Photo (Optional)</label>
+                        <input type="file" id="asset-photo" accept="image/png, image/jpeg, image/webp" class="file-input">
                     </div>
 
                     <button type="submit" class="btn-primary full-width">
