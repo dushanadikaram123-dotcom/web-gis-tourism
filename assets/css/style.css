@@ -448,3 +448,37 @@ body {
  . b t n - d e t a i l s : h o v e r   {   b a c k g r o u n d :   v a r ( - - d a r k ) ;   } 
  
  
+/* Dropdown Details in Popup */
+.extra-details {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed #ccc;
+    font-size: 0.9rem;
+    color: #555;
+    display: none;
+}
+.extra-details.expanded {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.btn-details-dropdown {
+    width: 100%;
+    background: #f0f0f0;
+    border: none;
+    color: var(--primary-color);
+    padding: 8px;
+    margin-top: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.btn-details-dropdown:hover {
+    background: #e4e4e4;
+}
