@@ -1,7 +1,7 @@
 // Initialize Supabase Connection
 const SUPABASE_URL = 'https://qhlwqorsiaofkyvlpqdi.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_yfZqvkmeXnDlD42lBJStvQ_LCKw5rOn';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Initialize map centered on the Western Province, Sri Lanka
 const map = L.map('map', { zoomControl: false }).setView([6.85, 80.05], 11);
@@ -44,7 +44,7 @@ const categoryEmojis = {
 
 // Fetch data from Supabase PostgreSQL Database
 async function loadDestinations() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from('destinations')
         .select('*')
         .order('created_at', { ascending: false });
@@ -114,7 +114,7 @@ form.addEventListener('submit', async function(e) {
     };
     
     // Insert into Supabase
-    const { error } = await supabase
+    const { error } = await supabaseClient
         .from('destinations')
         .insert([newAsset]);
         
