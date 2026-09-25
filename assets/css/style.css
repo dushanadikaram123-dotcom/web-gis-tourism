@@ -138,6 +138,42 @@ body {
     display: flex;
     flex-direction: column;
     gap: 25px;
+    transition: all 0.3s ease;
+}
+
+.floating-panel.minimized {
+    padding: 15px 25px;
+    width: auto;
+    gap: 0;
+}
+
+.floating-panel.minimized .panel-content {
+    display: none;
+}
+
+.panel-toggle {
+    background: none;
+    border: none;
+    color: var(--dark);
+    font-size: 1.1rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+}
+
+.panel-toggle i {
+    color: var(--primary);
+}
+
+.panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 20px;
 }
 
 .panel-section h3 {
@@ -396,3 +432,8 @@ body {
 .tag.culture { background: #ffedd5; color: #9a3412; }
 .tag.adventure { background: #fee2e2; color: #991b1b; }
 .tag.food { background: #dbeafe; color: #1e40af; }
+
+ / *   F i l e   I n p u t   * / 
+ . f i l e - i n p u t   {   w i d t h :   1 0 0 % ;   p a d d i n g :   1 0 p x ;   b o r d e r - r a d i u s :   8 p x ;   b o r d e r :   1 p x   d a s h e d   # c c c ;   b a c k g r o u n d - c o l o r :   # f a f a f a ;   f o n t - f a m i l y :   ' P o p p i n s ' ,   s a n s - s e r i f ;   c u r s o r :   p o i n t e r ;   } 
+ 
+ 
