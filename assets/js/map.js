@@ -36,10 +36,10 @@ const categoryColors = {
 };
 
 const categoryEmojis = {
-    nature: '🍃',
-    culture: '🏛️',
-    adventure: '🧗',
-    food: '🍛'
+    nature: '<i class="fa-solid fa-leaf"></i>',
+    culture: '<i class="fa-solid fa-building-columns"></i>',
+    adventure: '<i class="fa-solid fa-person-hiking"></i>',
+    food: '<i class="fa-solid fa-bowl-food"></i>'
 };
 
 // Fetch data from Supabase PostgreSQL Database
