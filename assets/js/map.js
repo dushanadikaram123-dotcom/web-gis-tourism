@@ -55,32 +55,7 @@ async function loadDestinations() {
     }
 
     tourismAssets = data;
-
-    // Auto-seed the database if it is completely empty
-    if (tourismAssets.length === 0) {
-        await seedInitialData();
-    } else {
-        renderMarkers();
-    }
-}
-
-// Function to automatically seed the popular destinations into Supabase the first time
-async function seedInitialData() {
-    const seedData = [
-        { name: "Colombo National Museum", category: "culture", description: "The largest museum in Sri Lanka, housing royal regalia and ancient artifacts from the Kandyan kingdom.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/National_Museum_of_Colombo_01.jpg/800px-National_Museum_of_Colombo_01.jpg", lat: 6.9105, lng: 79.8604 },
-        { name: "Gangaramaya Temple", category: "culture", description: "A highly revered temple mixing modern architecture and cultural essence, situated near Beira Lake.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Gangaramaya_Temple_Colombo.jpg/800px-Gangaramaya_Temple_Colombo.jpg", lat: 6.9157, lng: 79.8573 },
-        { name: "Galle Face Green", category: "nature", description: "A popular 5 hectare ocean-side urban park in the heart of Colombo. Great for sunset views and street food.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Galle_Face_Green.jpg/800px-Galle_Face_Green.jpg", lat: 6.9242, lng: 79.8447 },
-        { name: "Mount Lavinia Beach", category: "nature", description: "A famous beach just south of Colombo, known for its golden sand and vibrant sunset views.", photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Mount_Lavinia_Beach.jpg/800px-Mount_Lavinia_Beach.jpg", lat: 6.8347, lng: 79.8647 },
-        { name: "Secret Kalutara Waterfall", category: "nature", description: "A hidden cascading waterfall nestled deep within the rubber estates. Perfect for a morning hike and natural pool dip.", photo: "", lat: 6.685, lng: 80.125 }
-    ];
-    
-    const { error } = await supabase.from('destinations').insert(seedData);
-    if (!error) {
-        console.log("Seeded database with initial popular destinations.");
-        await loadDestinations(); // Reload after seeding
-    } else {
-        console.error("Failed to seed database:", error);
-    }
+    renderMarkers();
 }
 
 // Load data immediately on startup
