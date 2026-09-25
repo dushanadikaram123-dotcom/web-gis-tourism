@@ -192,20 +192,24 @@ function renderMarkers(filter = 'all') {
               shadowSize: [41, 41]
             });
 
-            // Clean, modern popup content with optional photo
-            const photoHTML = asset.photo ? `<img src="${asset.photo}" alt="${escapeHTML(asset.name)}" class="popup-photo">` : '';
+            // Hover popup content (No photo, just title and Details button)
             const popupContent = `
-                <div class="custom-popup">
-                    ${photoHTML}
+                <div class="hover-popup">
                     <h3>${escapeHTML(asset.name)}</h3>
-                    <p>${escapeHTML(asset.description)}</p>
-                    <span class="tag ${asset.category}">${categoryEmojis[asset.category]} ${asset.category}</span>
+                    <button class="btn-details" onclick="window.openDetails(${asset.id})">
+                        <i class="fa-solid fa-circle-info"></i> View Details
+                    </button>
                 </div>
             `;
             
             const marker = L.marker([asset.lat, asset.lng], {icon: customIcon})
-                .bindPopup(popupContent, { closeButton: false })
+                .bindPopup(popupContent, { closeButton: true })
                 .addTo(map);
+                
+            // Open popup on hover
+            marker.on('mouseover', function(e) {
+                this.openPopup();
+            });
                 
             markers.push(marker);
             count++;
@@ -214,6 +218,50 @@ function renderMarkers(filter = 'all') {
     
     totalCountEl.textContent = count;
 }
+
+// Global function to open the details modal
+window.openDetails = function(id) {
+    const asset = tourismAssets.find(a => a.id === id);
+    if (!asset) return;
+    
+    document.getElementById('detail-name').textContent = asset.name;
+    document.getElementById('detail-desc').textContent = asset.description;
+    
+    const photoEl = document.getElementById('detail-photo');
+    if (asset.photo) {
+        photoEl.src = asset.photo;
+        photoEl.classList.remove('hidden');
+    } else {
+        photoEl.src = '';
+        photoEl.classList.add('hidden');
+    }
+    
+    const categorySpan = document.getElementById('detail-category');
+    categorySpan.innerHTML = `${categoryEmojis[asset.category]} ${asset.category}`;
+    categorySpan.className = `tag ${asset.category}`;
+    
+    document.getElementById('details-modal').classList.remove('hidden');
+};
+
+// Close Add Modal
+document.getElementById('close-add-btn').addEventListener('click', () => {
+    modal.classList.add('hidden');
+});
+
+// Close Details Modal
+document.getElementById('close-details-btn').addEventListener('click', () => {
+    document.getElementById('details-modal').classList.add('hidden');
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.classList.add('hidden');
+    }
+    const detailsModal = document.getElementById('details-modal');
+    if (e.target === detailsModal) {
+        detailsModal.classList.add('hidden');
+    }
+});
 
 // Utility to escape HTML and prevent XSS
 function escapeHTML(str) {
