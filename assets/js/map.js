@@ -167,7 +167,7 @@ form.addEventListener('submit', async function(e) {
         photo: photoBase64,
         lat: parseFloat(latInput.value),
         lng: parseFloat(lngInput.value),
-        source: (document.getElementById('admin-code').value === '1234') ? 'Official' : 'Community'
+        source: 'Community'
     };
     
     // Insert into Supabase
