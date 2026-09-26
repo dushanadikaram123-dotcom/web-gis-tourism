@@ -1,0 +1,9 @@
+id,name,category,description,photo,lat,lng,created_at
+1,Colombo National Museum,culture,"The largest museum in Sri Lanka, housing royal regalia and ancient artifacts from the Kandyan kingdom.",colombo/Colombo_National_Museum_(42617132860).jpg,6.9105,79.8604,2026-09-25T11:31:46.576185+00:00
+2,Gangaramaya Temple,culture,"A highly revered temple mixing modern architecture and cultural essence, situated near Beira Lake.",colombo/Gangaramaya_Temple.jpg,6.9157,79.8573,2026-09-25T11:31:46.576185+00:00
+3,Galle Face Green,nature,A popular ocean-side urban park in the heart of Colombo. Great for sunset views and street food.,colombo/Colombo_galle_face_beach.jpg,6.9242,79.8447,2026-09-25T11:31:46.576185+00:00
+4,Dehiwala Zoo,nature,"The National Zoological Gardens of Sri Lanka, home to diverse wildlife and beautiful landscaped gardens.",colombo/dehiwala zoo.jpg,6.8566,79.8735,2026-09-25T11:31:46.576185+00:00
+5,Seethawaka Botanical Garden,nature,"A serene botanical garden located in the wet zone of Sri Lanka, perfect for nature walks.","colombo/Seethawaka_Botanical_Garden,_July_2016.jpg",6.9015,80.1415,2026-09-25T11:31:46.576185+00:00
+6,Diyasaru Park,nature,"An urban wetland park in Thalawathugoda, excellent for bird watching and nature photography.",colombo/Diyasaru.jpg,6.8837,79.9245,2026-09-25T11:31:46.576185+00:00
+7,Negombo Beach,nature,"A vibrant coastal stretch in Gampaha district known for its golden sands, fishing communities, and lively atmosphere.","gampaha/222_Lewis_Pl,_Negombo,_Sri_Lanka_-_panoramio.jpg",7.2343,79.8335,2026-09-25T11:31:46.576185+00:00
+8,Hamilton Canal,culture,"A historic canal in Negombo built during the colonial era, lined with colorful fishing boats.",gampaha/the-colorful-boats-are-docked-along-the-banks-of-hamiltons-canal-in-fishing-village-district-of-negombo-sri-lanka-2A3FW7P.jpg,7.1956,79.8402,2026-09-25T11:31:46.576185+00:00
