@@ -1,0 +1,125 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.8604,
+          6.9105
+        ]
+      },
+      "properties": {
+        "name": "Colombo National Museum",
+        "category": "culture",
+        "description": "The largest museum in Sri Lanka, housing royal regalia and ancient artifacts from the Kandyan kingdom."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.8573,
+          6.9157
+        ]
+      },
+      "properties": {
+        "name": "Gangaramaya Temple",
+        "category": "culture",
+        "description": "A highly revered temple mixing modern architecture and cultural essence, situated near Beira Lake."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.8447,
+          6.9242
+        ]
+      },
+      "properties": {
+        "name": "Galle Face Green",
+        "category": "nature",
+        "description": "A popular ocean-side urban park in the heart of Colombo. Great for sunset views and street food."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.8735,
+          6.8566
+        ]
+      },
+      "properties": {
+        "name": "Dehiwala Zoo",
+        "category": "nature",
+        "description": "The National Zoological Gardens of Sri Lanka, home to diverse wildlife and beautiful landscaped gardens."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          80.1415,
+          6.9015
+        ]
+      },
+      "properties": {
+        "name": "Seethawaka Botanical Garden",
+        "category": "nature",
+        "description": "A serene botanical garden located in the wet zone of Sri Lanka, perfect for nature walks."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.9245,
+          6.8837
+        ]
+      },
+      "properties": {
+        "name": "Diyasaru Park",
+        "category": "nature",
+        "description": "An urban wetland park in Thalawathugoda, excellent for bird watching and nature photography."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.8335,
+          7.2343
+        ]
+      },
+      "properties": {
+        "name": "Negombo Beach",
+        "category": "nature",
+        "description": "A vibrant coastal stretch in Gampaha district known for its golden sands, fishing communities, and lively atmosphere."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.8402,
+          7.1956
+        ]
+      },
+      "properties": {
+        "name": "Hamilton Canal",
+        "category": "culture",
+        "description": "A historic canal in Negombo built during the colonial era, lined with colorful fishing boats."
+      }
+    }
+  ]
+}
