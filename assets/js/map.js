@@ -166,7 +166,8 @@ form.addEventListener('submit', async function(e) {
         description: document.getElementById('asset-desc').value,
         photo: photoBase64,
         lat: parseFloat(latInput.value),
-        lng: parseFloat(lngInput.value)
+        lng: parseFloat(lngInput.value),
+        source: (document.getElementById('admin-code').value === '1234') ? 'Official' : 'Community'
     };
     
     // Insert into Supabase
@@ -225,7 +226,10 @@ function renderMarkers(filter = 'all') {
                 <div class="custom-popup" id="popup-${asset.id}">
                     ${photoHTML}
                     <h3>${escapeHTML(asset.name)}</h3>
-                    <span class="tag ${asset.category}">${categoryEmojis[asset.category]} ${asset.category}</span>
+                    <div class="popup-tags">
+                        <span class="tag ${asset.category}">${categoryEmojis[asset.category]} ${asset.category}</span>
+                        ${asset.source === 'Official' ? '<span class="tag official">👑 Official</span>' : '<span class="tag community">👥 Community</span>'}
+                    </div>
                     
                     <div class="extra-details" id="details-${asset.id}">
                         <p>${escapeHTML(asset.description)}</p>
