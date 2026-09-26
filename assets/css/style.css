@@ -482,3 +482,19 @@ body {
 .btn-details-dropdown:hover {
     background: #e4e4e4;
 }
+
+/* Source Badges */
+.popup-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+}
+.tag.official {
+    background: #ff7675;
+    color: white;
+}
+.tag.community {
+    background: #dfe6e9;
+    color: #2d3436;
+}
